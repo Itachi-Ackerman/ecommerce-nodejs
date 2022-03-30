@@ -497,7 +497,7 @@ export default class Server {
                     // create joi schema
                     const schema = Joi.object({
                         productId : Joi.string().required(),
-                        quantity: Joi.number().default(1)
+                        quantity: Joi.number().required()
                     });
 
                     // validating req.body
