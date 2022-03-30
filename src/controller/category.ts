@@ -10,7 +10,7 @@ export default class CtrlCategory {
      */
     static async create(body: any) {
         const data = {
-            ...body
+            name: body
         }
         await category.create(data);
         return { success: true, message: "category created successfully" };
