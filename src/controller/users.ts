@@ -113,7 +113,7 @@ export default class CtrlUser {
                             {
                                 $project: {
                                     "user": 0,
-                                    "__v": 0
+                                    "__v": 0,
                                 }
 
                             },
@@ -133,7 +133,8 @@ export default class CtrlUser {
                                         {
                                             $project: {
                                                 "__v": 0,
-                                                "costPrice": 0
+                                                "costPrice": 0,
+                                                "availableQuantity": 0
                                             }
                                         },
                                         {
