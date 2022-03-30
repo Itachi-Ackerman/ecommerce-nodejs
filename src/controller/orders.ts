@@ -19,17 +19,20 @@ import Time from "../utils/Time";
 
         //accessing respective objects from collections
         const product1 : IProduct = await products.findOne({ "_id": productId }) as IProduct;
+        const user1 = await users.findOne({"_id": userId});
+        if(user1.balance<(quantity1*product1.costPrice)) throw new Error("Balance insufficient");
 
         //checking if product object was found, if not throw error
         if (product1) {
             //checking if products available>=0 even after subtracting required seats
             if ((product1.availableQuantity - quantity1) > -1) {
+
                 //incrementing/decrementing in database wherever necessary
                 const cp = product1.costPrice;
                 const sp = product1.sellingPrice;
                 await products.updateOne({ _id: productId }, { $inc: { availableQuantity: -quantity1 } });
                 await users.updateOne({_id: userId},{ $inc: { balance: -(quantity1*sp) } })
-                await sellers.updateOne({_id: product1.seller},{ $inc: { totalRevenue: quantity1*sp, netProfit: quantity1*(cp-sp), totalOrders: quantity1 } })
+                await sellers.updateOne({_id: product1.seller},{ $inc: { totalRevenue: quantity1*sp, netProfit: quantity1*(sp-cp), totalOrders: quantity1 } })
                 await orders.create({
                     user: userId,
                     product: productId,
