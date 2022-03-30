@@ -309,7 +309,7 @@ export default class CtrlSeller {
 
         if (delivered.toLowerCase() == "yes") flag = true;
         //filtering by delivery completion
-        if (flag) {
+        if (flag==false || flag==true) {
             match1 = {
                 //matching sellerID with sellerId from orders collection
                 $match: {
