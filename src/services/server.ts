@@ -423,7 +423,7 @@ export default class Server {
         );
 
         //displaying all categories
-        this.app.get("category/findAll", expressResponse(async (req: Request) => {
+        this.app.get("/category/findAll", expressResponse(async (req: Request) => {
             //creating joi schema
             const schema = Joi.object({
                 page: Joi.number().integer().default(0),
@@ -469,7 +469,7 @@ export default class Server {
         );
 
         //displaying all products
-        this.app.get("products/findAll", expressResponse(async (req: Request) => {
+        this.app.get("/products/findAll", expressResponse(async (req: Request) => {
             //creating joi schema
             const schema = Joi.object({
                 page: Joi.number().integer().default(0),
@@ -512,7 +512,7 @@ export default class Server {
         );
 
         //displaying all orders
-        this.app.get("orders/findAll", expressResponse(async (req: Request) => {
+        this.app.get("/orders/findAll", expressResponse(async (req: Request) => {
 
             //authenticating admin
             //@ts-ignore
