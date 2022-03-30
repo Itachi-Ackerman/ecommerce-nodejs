@@ -132,9 +132,42 @@ export default class CtrlUser {
                                     pipeline: [
                                         {
                                             $project: {
-                                                "__v": 0
+                                                "__v": 0,
+                                                "costPrice": 0
                                             }
-                                        }
+                                        },
+                                        {
+                                            $lookup:{
+                                                from: "sellers",
+                                                localField: "seller",
+                                                foreignField: "_id",
+                                                pipeline:[
+                                                    {
+                                                        $project: {
+                                                            "__v":0,
+                                                            "password": 0,
+                                                            "totalRevenue" : 0,
+                                                            "netProfit": 0,
+                                                            "totalOrders": 0
+                                                        }
+                                                    }
+                                                ],
+                                                as: "seller"
+                                            }
+                                        },
+                                        {
+                                            $lookup: {
+                                                from: "categories",
+                                                localField: "category",
+                                                foreignField: "_id",
+                                                pipeline: [{
+                                                    $project: {
+                                                        "__v": 0
+                                                    }
+                                                }],
+                                                as: "category"
+                                            },
+                                        },
                                     ],
                                     as: "product"
                                 }

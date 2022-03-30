@@ -170,7 +170,7 @@ export default class CtrlSeller {
                             //looking up from category collection with id reference 
                             {
                                 $lookup: {
-                                    from: "category",
+                                    from: "categories",
                                     localField: "category",
                                     foreignField: "_id",
                                     pipeline: [
@@ -367,7 +367,7 @@ export default class CtrlSeller {
                             {
                                 //looking up form category collection
                                 $lookup: {
-                                    from: "category",
+                                    from: "categories",
                                     localField: "category",
                                     foreignField: "_id",
                                     pipeline: [

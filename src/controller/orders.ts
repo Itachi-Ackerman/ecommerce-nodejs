@@ -120,7 +120,20 @@ import Time from "../utils/Time";
                                     ],
                                     as: "seller"
                                 }
-                            }
+                            },
+                            {
+                                $lookup: {
+                                    from: "categories",
+                                    localField: "category",
+                                    foreignField: "_id",
+                                    pipeline: [{
+                                        $project: {
+                                            "__v": 0
+                                        }
+                                    }],
+                                    as: "category"
+                                },
+                            },
                         ],
                         as: "product"
                     }

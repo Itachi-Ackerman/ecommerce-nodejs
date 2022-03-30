@@ -93,7 +93,7 @@ export default class CtrlProduct {
                 },
                 {
                     $lookup: {
-                        from: "category",
+                        from: "categories",
                         localField: "category",
                         foreignField: "_id",
                         pipeline: [{
