@@ -78,11 +78,11 @@ export default class CtrlSeller {
      * @param sellerId 
      * @param fiterByStock - filtering by availibility
      */
-    static async sellerProfile(sellerId: string, fiterByStock: string): Promise<ISeller[]> {
+    static async sellerProfile(sellerId: string, filterByStock: string): Promise<ISeller[]> {
 
         let match1;
         //filtering by stock
-        if (fiterByStock.toLowerCase() == "no") {
+        if (filterByStock.toLowerCase() == "no") {
             match1 = {
                 //matching sellerId from sellers with seller Id in products collection
                 $match:
@@ -109,7 +109,7 @@ export default class CtrlSeller {
                                     $eq: ["$seller", "$$sellerId"]
                                 },
                                 {
-                                    $gt: ["availableQuantity", 0]
+                                    $gt: ["$availableQuantity", 0]
                                 }
                             ]
 
@@ -314,7 +314,7 @@ export default class CtrlSeller {
             match1 = {
                 //matching sellerID with sellerId from orders collection
                 $match: {
-                    seller: new mongoose.Types.ObjectId(sellerId),
+                    "product.seller": new mongoose.Types.ObjectId(sellerId),
                     delivered: flag
                 },
             }
@@ -323,7 +323,7 @@ export default class CtrlSeller {
             match1 = {
                 //matching sellerID with sellerId from orders collection
                 $match: {
-                    seller: new mongoose.Types.ObjectId(sellerId),
+                    "product.seller": new mongoose.Types.ObjectId(sellerId),
                 },
             }
         }
@@ -336,6 +336,46 @@ export default class CtrlSeller {
                 //         delivered: flag
                 //     },
                 // },
+                 {
+                    $lookup: {
+                        from: "products",
+                        localField: "product",
+                        foreignField: "_id",
+                        pipeline: [
+                            {
+                                //looking up form category collection
+                                $lookup: {
+                                    from: "categories",
+                                    localField: "category",
+                                    foreignField: "_id",
+                                    pipeline: [
+                                        {
+                                            $project: {
+                                                "__v": 0
+                                            }
+                                        }
+                                    ],
+                                    as: "category"
+
+                                }
+                            },
+                            //ignoring unnecessary fields before displaying
+                            {
+
+                                $project: {
+                                    "_id": 0,
+                                    "__v": 0,
+                                    "costPrice": 0,
+                                    "productDate": 0,
+                                    "availableQuantity": 0,
+                                    "seller": 0
+                                }
+                            }
+
+                        ],
+                        as: "product"
+                    }
+                },
                 match1,
                 {
                     //looking up from users collection with id as reference
