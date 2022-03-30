@@ -305,7 +305,7 @@ export default class CtrlSeller {
     static async sellerOrders(sellerId: string, delivered: string): Promise<IOrder[]> {
 
         //assigning conditional values depending on seller filter preference
-        let flag, match1;
+        let flag=null, match1;
         if (delivered.toLowerCase() == "no") flag = false;
 
         if (delivered.toLowerCase() == "yes") flag = true;
