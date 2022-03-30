@@ -323,7 +323,8 @@ export default class CtrlSeller {
             match1 = {
                 //matching sellerID with sellerId from orders collection
                 $match: {
-                    "product.seller": new mongoose.Types.ObjectId(sellerId),
+                   // "product.seller": new mongoose.Types.ObjectId(sellerId),
+                   $eq: ["$product.seller",sellerId]
                 },
             }
         }
