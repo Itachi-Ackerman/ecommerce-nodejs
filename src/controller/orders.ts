@@ -20,7 +20,7 @@ import Time from "../utils/Time";
         //accessing respective objects from collections
         const product1 : IProduct = await products.findOne({ "_id": productId }) as IProduct;
         const user1 = await users.findOne({"_id": userId});
-        if(user1.balance<(quantity1*product1.costPrice)) throw new Error("Balance insufficient");
+        if(user1.balance<(quantity1*product1.sellingPrice)) throw new Error("Balance insufficient");
 
         //checking if product object was found, if not throw error
         if (product1) {
