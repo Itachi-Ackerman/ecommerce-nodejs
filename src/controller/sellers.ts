@@ -378,7 +378,7 @@ export default class CtrlSeller {
                     }
                 },
                 {
-                    $unwind: "product"
+                    $unwind: "$product"
                 },
                 match1,
                 {
