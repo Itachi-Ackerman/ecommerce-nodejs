@@ -452,15 +452,17 @@ export default class Server {
                         sellingPrice: Joi.number().required(),
                         costPrice: Joi.number().required(),
                         productDate: Time.current(),
-                        //@ts-ignore
-                        seller: req.session.seller._id,
+                        ////@ts-ignore
+                        //seller: req.session.seller._id,
                         category: Joi.string().required(),
                         availableQuantity: Joi.number().required()
                     });
 
                     // validating req.body
-                    const data = await schema.validateAsync(req.body);
-
+                    let data = await schema.validateAsync(req.body);
+                    
+                    //@ts-ignore
+                    data.seller = req.session.seller._id;
                     // creating seller
                     return CtrlProduct.create(data);
                 }
