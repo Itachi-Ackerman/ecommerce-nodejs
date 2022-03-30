@@ -1,11 +1,8 @@
 /**
  * @info schema for orders
  */
-
-import { boolean } from "joi";
 import { Schema, model } from "mongoose";
 import { IProduct } from "./products";
-import { ISeller } from "./sellers";
 import { IUser } from "./users";
 
 export interface IOrder {
