@@ -451,9 +451,6 @@ export default class Server {
                         productName: Joi.string().required(),
                         sellingPrice: Joi.number().required(),
                         costPrice: Joi.number().required(),
-                        productDate: Time.current(),
-                        ////@ts-ignore
-                        //seller: req.session.seller._id,
                         category: Joi.string().required(),
                         availableQuantity: Joi.number().required()
                     });
@@ -463,6 +460,7 @@ export default class Server {
                     
                     //@ts-ignore
                     data.seller = req.session.seller._id;
+                    data.productDate = Time.current();
                     // creating seller
                     return CtrlProduct.create(data);
                 }
