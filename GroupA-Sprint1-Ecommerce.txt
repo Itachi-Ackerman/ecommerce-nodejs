@@ -1,0 +1,12 @@
+Group A
+
+Sprint 1 Ecommerce Project team details
+
+The project was divided into different sections and then worked on by members of the team
+together on a virtual meet. The member who was assigned a specific section shared their screen 
+and coded along as the team discussed the ideas and logic. 
+
+1) Subhayu Bhattacharjee - Assigned the Orders model and every function/route pertaining to it.
+2) Saniya Jadhav - Assigned the Users model and every function/route pertaining to it.
+3) Bharat Fegade - Assigned the Products model and every function/route pertaining to it.
+4) Sudipti Ranjan - Assigned the Categories/Sellers model and every function/route pertaining to it.
