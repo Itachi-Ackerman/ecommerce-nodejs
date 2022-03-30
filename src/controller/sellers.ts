@@ -139,18 +139,6 @@ export default class CtrlSeller {
                         from: "products",
                         let: { sellerId: "$_id" },
                         pipeline: [
-                            // {
-                            //     //matching sellerId from sellers with seller Id in products collection
-                            //     $match:
-                            //     {
-                            //         $expr:
-                            //         {
-
-                            //             $eq: ["$seller", "$$sellerId"]
-
-                            //         }
-                            //     }
-                            // },
                             match1,
                             //ignoring unnecessary fields before displaying
                             {
@@ -190,90 +178,6 @@ export default class CtrlSeller {
 
             ])
             .exec();
-
-
-        //         else {
-        //     return sellers
-        //         .aggregate([
-        //             {
-        //                 //matching sellerID with sellerId from seller collection
-        //                 $match: {
-        //                     _id: new mongoose.Types.ObjectId(sellerId)
-        //                 },
-        //             },
-        //             {
-        //                 //ignoring password before displaying
-        //                 $project: {
-        //                     "password": 0,
-        //                     "__v": 0
-        //                 }
-        //             },
-        //             {
-        //                 //looking up from products collection with id as reference
-        //                 $lookup: {
-        //                     from: "products",
-        //                     let: { sellerId: "$_id" },
-        //                     pipeline: [
-        //                         // {
-        //                         //     //matching sellerId from sellers with seller Id in products collection
-        //                         //     $match:
-        //                         //     {
-        //                         //         $expr:
-        //                         //         {
-        //                         //             $and:
-        //                         //                 [
-        //                         //                     {
-        //                         //                         $eq: ["$seller", "$$sellerId"]
-        //                         //                     },
-        //                         //                     {
-        //                         //                         $gt: ["availableQuantity", 0]
-        //                         //                     }
-        //                         //                 ]
-
-        //                         //         }
-        //                         //     }
-        //                         // },
-        //                         match1,
-        //                         //ignoring unnecessary fields before displaying
-        //                         {
-        //                             $project: {
-        //                                 "seller": 0,
-        //                                 "__v": 0
-        //                             }
-
-        //                         },
-
-        //                         // sorting product recent to oldest
-        //                         {
-        //                             $sort: {
-        //                                 productDate: -1
-        //                             }
-        //                         },
-
-        //                         //looking up from category collection with id reference 
-        //                         {
-        //                             $lookup: {
-        //                                 from: "category",
-        //                                 localField: "category",
-        //                                 foreignField: "_id",
-        //                                 pipeline: [
-        //                                     {
-        //                                         $project: {
-        //                                             "__v": 0
-        //                                         }
-        //                                     }
-        //                                 ],
-        //                                 as: "category"
-        //                             }
-        //                         },
-        //                     ],
-        //                     as: "products"
-        //                 },
-        //             },
-
-        //         ])
-        //         .exec();
-        // }
     }
 
     /**
@@ -328,13 +232,6 @@ export default class CtrlSeller {
         }
         return orders
             .aggregate([
-                // {
-                //     //matching sellerID with sellerId from orders collection
-                //     $match: {
-                //         seller: new mongoose.Types.ObjectId(sellerId),
-                //         delivered: flag
-                //     },
-                // },
                 {
                     $lookup: {
                         from: "products",
@@ -402,85 +299,5 @@ export default class CtrlSeller {
 
             ])
             .exec()
-        // }
-        //     else {
-        //     return orders
-        //         .aggregate([
-        //             {
-        //                 //matching sellerID with sellerId from orders collection
-        //                 $match: {
-        //                     seller: new mongoose.Types.ObjectId(sellerId),
-        //                 },
-        //             },
-        //             {
-        //                 //looking up from users collection with id as reference
-        //                 $lookup: {
-        //                     from: "users",
-        //                     localField: "user",
-        //                     foreignField: "_id",
-        //                     pipeline: [
-        //                         //ignoring unnecessary fields before displaying
-        //                         {
-        //                             $project: {
-        //                                 "_id": 0,
-        //                                 "__v": 0,
-        //                                 "password": 0,
-        //                                 "balance": 0
-        //                             }
-
-        //                         },
-        //                     ],
-        //                     as: "user"
-        //                 }
-        //             },
-        //             {
-        //                 $lookup: {
-        //                     from: "products",
-        //                     localField: "product",
-        //                     foreignField: "_id",
-        //                     pipeline: [
-        //                         {
-        //                             //looking up form category collection
-        //                             $lookup: {
-        //                                 from: "category",
-        //                                 localField: "category",
-        //                                 foreignField: "_id",
-        //                                 pipeline: [
-        //                                     {
-        //                                         $project: {
-        //                                             "__v": 0
-        //                                         }
-        //                                     }
-        //                                 ],
-        //                                 as: "category"
-
-        //                             }
-        //                         },
-        //                         //ignoring unnecessary fields before displaying
-        //                         {
-
-        //                             $project: {
-        //                                 "_id": 0,
-        //                                 "__v": 0,
-        //                                 "costPrice": 0,
-        //                                 "productDate": 0,
-        //                                 "availableQuantity": 0,
-        //                                 "seller": 0
-        //                             }
-        //                         }
-
-        //                     ],
-        //                     as: "product"
-        //                 }
-        //             },
-        //             {
-        //                 $project: {
-        //                     "seller": 0,
-        //                     "__v": 0,
-        //                 }
-        //             }
-        //         ])
-        //         .exec()
-        // }
     }
 }
