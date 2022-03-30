@@ -171,7 +171,7 @@ export default class Server {
             expressResponse((req: Request) => {
                 // destroy session
                 //@ts-ignore
-                req.session.user.destroy(() => { });
+                req.session.destroy(() => { });
 
                 // return success to user
                 return { success: true, message: "user is logged out" };
@@ -228,7 +228,7 @@ export default class Server {
             expressResponse((req: Request) => {
                 // destroy session
                 //@ts-ignore
-                req.session.admin.destroy(() => { });
+                req.session.destroy(() => { });
 
                 // return success to admin
                 return { success: true, message: "admin is logged out" };
@@ -388,7 +388,7 @@ export default class Server {
             expressResponse((req: Request) => {
                 // destroy session
                 //@ts-ignore
-                req.session.seller.destroy(() => { });
+                req.session.destroy(() => { });
 
                 // return success to seller
                 return { success: true, message: "seller is logged out" };
