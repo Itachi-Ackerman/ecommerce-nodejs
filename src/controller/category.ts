@@ -8,8 +8,10 @@ export default class CtrlCategory {
      * creating a new category
      * @param body
      */
-    static async create(data: any) {
-        
+    static async create(body: any) {
+        const data = {
+            ...body
+        }
         await category.create(data);
         return { success: true, message: "category created successfully" };
     }
