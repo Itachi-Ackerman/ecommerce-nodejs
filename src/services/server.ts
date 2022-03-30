@@ -334,8 +334,13 @@ export default class Server {
                 // check seller authentication
                 //@ts-ignore
                 if (req.session && req.session.seller) {
+                    //creating Joi schema
+                    const schema = Joi.string().default("none");
+
+                    //validate
+                    const filterByStock = await schema.validateAsync(req.query.filterByStock);
                     //@ts-ignore
-                    return CtrlSeller.sellerProfile(req.session.seller._id);
+                    return CtrlSeller.sellerProfile(req.session.seller._id,filterByStock);
                 }
 
                 //throw error
