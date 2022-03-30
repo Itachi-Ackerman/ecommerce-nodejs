@@ -283,14 +283,13 @@ export default class CtrlSeller {
      * @param delivered 
      */
 
-    static async updateOrderToDelivered(sellerId: string, orderId: string){
-        const order1 = await orders.findOne({ _id: orderId});
-        if(order1){
-            const prod = await products.findOne({_id: order1.product})
-            if(prod.seller == sellerId)
-            {
-                await orders.updateOne({ _id: orderId},{ $set: { delivered: true}});
-                return {success: true, message:"order updated to delivered successfully"};
+    static async updateOrderToDelivered(sellerId: string, orderId: string) {
+        const order1 = await orders.findOne({ _id: orderId });
+        if (order1) {
+            const prod = await products.findOne({ _id: order1.product })
+            if (prod.seller == sellerId) {
+                await orders.updateOne({ _id: orderId }, { $set: { delivered: true } });
+                return { success: true, message: "order updated to delivered successfully" };
             }
             else throw new Error("Seller ID does not match!")
         }
@@ -305,7 +304,7 @@ export default class CtrlSeller {
     static async sellerOrders(sellerId: string, delivered: string): Promise<IOrder[]> {
 
         //assigning conditional values depending on seller filter preference
-        let flag=null, match1;
+        let flag = null, match1;
         if (delivered.toLowerCase() == "no") flag = false;
 
         if (delivered.toLowerCase() == "yes") flag = true;
@@ -323,7 +322,7 @@ export default class CtrlSeller {
             match1 = {
                 //matching sellerID with sellerId from orders collection
                 $match: {
-                   "product.seller": sellerId
+                    "product.seller": new mongoose.Types.ObjectId(sellerId)
                 },
             }
         }
@@ -336,7 +335,7 @@ export default class CtrlSeller {
                 //         delivered: flag
                 //     },
                 // },
-                 {
+                {
                     $lookup: {
                         from: "products",
                         localField: "product",
@@ -400,53 +399,6 @@ export default class CtrlSeller {
                         as: "user"
                     }
                 },
-                {
-                    $lookup: {
-                        from: "products",
-                        localField: "product",
-                        foreignField: "_id",
-                        pipeline: [
-                            {
-                                //looking up form category collection
-                                $lookup: {
-                                    from: "categories",
-                                    localField: "category",
-                                    foreignField: "_id",
-                                    pipeline: [
-                                        {
-                                            $project: {
-                                                "__v": 0
-                                            }
-                                        }
-                                    ],
-                                    as: "category"
-
-                                }
-                            },
-                            //ignoring unnecessary fields before displaying
-                            {
-
-                                $project: {
-                                    "_id": 0,
-                                    "__v": 0,
-                                    "costPrice": 0,
-                                    "productDate": 0,
-                                    "availableQuantity": 0,
-                                    "seller": 0
-                                }
-                            }
-
-                        ],
-                        as: "product"
-                    }
-                },
-                {
-                    $project: {
-                        "seller": 0,
-                        "__v": 0,
-                    }
-                }
-
 
             ])
             .exec()
