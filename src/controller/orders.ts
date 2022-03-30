@@ -15,7 +15,7 @@ import Time from "../utils/Time";
      * @param productId - productId given by user
      * @param quantity - required quantity
      */
-    static async placeOrder(userId: string, productId: string, quantity: number) {
+    static async placeOrder(userId: string, productId: string, quantity1: number) {
 
         //accessing respective objects from collections
         const product1 : IProduct = await products.findOne({ "_id": productId }) as IProduct;
@@ -23,17 +23,18 @@ import Time from "../utils/Time";
         //checking if product object was found, if not throw error
         if (product1) {
             //checking if products available>=0 even after subtracting required seats
-            if ((product1.availableQuantity - quantity) > -1) {
+            if ((product1.availableQuantity - quantity1) > -1) {
                 //incrementing/decrementing in database wherever necessary
                 const cp = product1.costPrice;
                 const sp = product1.sellingPrice;
-                await products.updateOne({ _id: productId }, { $inc: { availableQuantity: -quantity } });
-                await users.updateOne({_id: userId},{ $inc: { balance: -(quantity*sp) } })
-                await sellers.updateOne({_id: userId},{ $inc: { totalRevenue: quantity*sp, netProfit: quantity*(cp-sp), totalOrders: quantity } })
+                await products.updateOne({ _id: productId }, { $inc: { availableQuantity: -quantity1 } });
+                await users.updateOne({_id: userId},{ $inc: { balance: -(quantity1*sp) } })
+                await sellers.updateOne({_id: product1.seller},{ $inc: { totalRevenue: quantity1*sp, netProfit: quantity1*(cp-sp), totalOrders: quantity1 } })
                 await orders.create({
                     user: userId,
                     product: productId,
                     orderDate: Time.current(),
+                    quantity: quantity1,
                     delivered: false
                 });
                 return { success: true, message: `Order for product ${product1.productName} placed successfully` };

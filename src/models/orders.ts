@@ -13,6 +13,7 @@ import { IUser } from "./users";
      user: string | IUser;
      product: string | IProduct;
      orderDate: string;
+     quantity: number;
      delivered: boolean;
  }
  

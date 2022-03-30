@@ -476,13 +476,13 @@ export default class Server {
                 limit: Joi.number().integer().default(5),
                 filterBy: Joi.string().default("productDate"),
                 order: Joi.string().default("dsc"),
-                category: Joi.string().default("none")
+                categoryId: Joi.string().default("none")
             });
 
             // validate
             const data = await schema.validateAsync(req.query);
 
-            return CtrlProduct.findAll(data.page,data.limit,data.filterBy,data.order,data.category);
+            return CtrlProduct.findAll(data.page,data.limit,data.filterBy,data.order,data.categoryId);
         })
         );
 
