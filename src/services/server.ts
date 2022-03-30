@@ -369,7 +369,7 @@ export default class Server {
         }))
 
         //dispaying seller orders
-        this.app.put("/sellers/findOrders", expressResponse(async (req: Request) => {
+        this.app.get("/sellers/findOrders", expressResponse(async (req: Request) => {
             // check seller authentication
             //@ts-ignore
             if (req.session && req.session.seller) {
@@ -378,7 +378,7 @@ export default class Server {
                 const schema = Joi.string().default("none");
 
                 //validate
-                const del = await schema.validateAsync(req.body.delivered);
+                const del = await schema.validateAsync(req.query.delivered);
 
                 //@ts-ignore
                 return CtrlSeller.sellerOrders(req.session.seller._id, del);
