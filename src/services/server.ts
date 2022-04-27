@@ -118,7 +118,7 @@ export default class Server {
                 // @ts-ignore
                 if (req.session && req.session.user) {
                     // @ts-ignore
-                    return req.session.user.email;
+                    return {'name': req.session.user.name, 'email': req.session.user.email};
                 }
                 // throw error
                 else throw new Error("user not authenticated");
@@ -296,7 +296,7 @@ export default class Server {
                 // @ts-ignore
                 if (req.session && req.session.seller) {
                     // @ts-ignore
-                    return req.session.seller.email;
+                    return {'name':req.session.seller.name,'email':req.session.seller.email};
                 }
                 // throw error
                 else throw new Error("seller not authenticated");
@@ -474,7 +474,7 @@ export default class Server {
             const schema = Joi.object({
                 page: Joi.number().integer().default(0),
                 limit: Joi.number().integer().default(5),
-                filterBy: Joi.string().default("productDate"),
+                sortBy: Joi.string().default("productDate"),
                 order: Joi.string().default("dsc"),
                 categoryId: Joi.string().default("none")
             });
@@ -482,7 +482,7 @@ export default class Server {
             // validate
             const data = await schema.validateAsync(req.query);
 
-            return CtrlProduct.findAll(data.page,data.limit,data.filterBy,data.order,data.categoryId);
+            return CtrlProduct.findAll(data.page,data.limit,data.sortBy,data.order,data.categoryId);
         })
         );
 

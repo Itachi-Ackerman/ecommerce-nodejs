@@ -1,5 +1,6 @@
 import products, { IProduct } from "../models/products";
 import category from "../models/category";
+import mongoose from "mongoose";
 
 export default class CtrlProduct {
     /**
@@ -28,13 +29,13 @@ export default class CtrlProduct {
      * @param order - execute in order
      * 
      */
-    static async findAll(page: number, limit: number, filterBy: string, order: string, category: string): Promise<IProduct[]> {
+    static async findAll(page: number, limit: number, sortBy: string, order: string, category: string): Promise<IProduct[]> {
         //setting order value depending on user preference
         const ord = (order.toLowerCase() == "asc") ? 1 : -1;
-        if (filterBy.toLowerCase() == "price") filterBy = "sellingPrice";
-        else filterBy = "productDate";
+        if (sortBy.toLowerCase() == "price") sortBy = "sellingPrice";
+        else sortBy = "productDate";
         let sort1 = { $sort: {} };
-        sort1["$sort"][filterBy] = ord;
+        sort1["$sort"][sortBy] = ord;
         let match1;
         if (category == "none") {
             match1 = {
@@ -48,13 +49,15 @@ export default class CtrlProduct {
         }
         else {
             match1 = {
-                //matching to check if products stock is empty
+                //matching to check if products stock is empty and categoryID
                 $match: {
                     $expr: {
-                        $and: {
-                            $gt: ["$availableQuantity", 0],
-                            $eq: ["$category", category],
+                        $and: [{
+                            $gt: ["$availableQuantity", 0]
                         },
+                        {
+                            $eq: ["$category",new mongoose.Types.ObjectId(category)],
+                        }],
                     }
                 }
             }
