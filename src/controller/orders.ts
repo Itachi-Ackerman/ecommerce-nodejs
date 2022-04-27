@@ -18,6 +18,7 @@ import Time from "../utils/Time";
     static async placeOrder(userId: string, productId: string, quantity1: number) {
 
         //accessing respective objects from collections
+        if(quantity1<1) throw new Error("Quantity must be greater than 0");
         const product1 : IProduct = await products.findOne({ "_id": productId }) as IProduct;
         const user1 = await users.findOne({"_id": userId});
         if(user1.balance<(quantity1*product1.sellingPrice)) throw new Error("Balance insufficient");
